@@ -1,4 +1,4 @@
-# Falcon
+# ioserver
 
 ***
 
@@ -45,9 +45,6 @@ The `/` project directory contains all code used in the application along with a
   |- README.md
 
 ```
-
-##License
-Ivokio Services Pvt. Ltd
 
 ##Help Links
 1. http://blog.ragingflame.co.za/2015/4/1/how-i-build-nodejs-applications
