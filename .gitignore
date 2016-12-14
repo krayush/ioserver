@@ -3,7 +3,7 @@ user.properties
 *.bak
 build/
 .sass-cache
-.idea/workspace.xml
+.idea/*
 *.eml
 *.iml
 *.ipr
