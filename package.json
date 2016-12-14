@@ -12,28 +12,24 @@
     "grunt-contrib-jshint": "^0.11.3"
   },
   "dependencies": {
+    "node-static": "latest",
     "MD5": "latest",
     "body-parser": "^1.8.1",
     "client-sessions": "^0.7.0",
     "cookie-parser": "^1.4.0",
     "express-handlebars": "^2.0.1",
     "express-urlrewrite": "^1.2.0",
-    "fb": "^0.7.3",
     "forever-monitor": "^1.7.0",
     "grunt": "0.4.5",
     "grunt-concurrent": "*",
     "grunt-contrib-copy": "*",
-    "grunt-contrib-less": "*",
-    "grunt-contrib-uglify": "*",
     "grunt-contrib-watch": "*",
     "grunt-nodemon": "*",
     "mysql": "github:felixge/node-mysql",
-    "nodemailer": "^1.10.0",
     "open": "*",
     "promise": "^7.0.4",
     "q": "^1.4.1",
     "querystring": "^0.2.0",
-    "sitemap": "^1.5.0",
     "comet.io": "latest"
   }
 }
