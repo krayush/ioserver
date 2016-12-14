@@ -1,0 +1,9 @@
+<script>
+    (function() {
+        if(localStorage && JSON.stringify({{{userDetails}}})) {
+            localStorage.setItem("AuthDetails" , JSON.stringify({{{userDetails}}}));
+        } else {
+            localStorage.removeItem("AuthDetails");
+        }
+    })();
+</script>
