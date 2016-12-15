@@ -3,7 +3,6 @@ var API_CONFIG = require("../config/appConstants");
 var crypto = require("../config/crypto");
 var connection = require("../config/db");
 var queries = require("../config/dbQueries");
-var contact = require("./contact");
 var fs = require('fs');
 var q = require('q');
 
