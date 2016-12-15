@@ -1,5 +1,3 @@
-//var userModel = require('../models/user');
-//var userCollection = require('../collections/user');
 var util = require('./util');
 var API_CONFIG = require("../config/appConstants");
 var crypto = require("../config/crypto");
@@ -10,7 +8,7 @@ var fs = require('fs');
 var q = require('q');
 
 module.exports = {
-    getReviews: function (req, res) {
+    registerSession: function (req, res) {
         var userResponse;
         var userData = {
             userId: req.query.userId
@@ -372,8 +370,5 @@ module.exports = {
         if(!crypto.validateAuthorization(req, res, userData) || !util.checkIfValidEmail(userData.userEmail, res) || !util.checkIfValidInteger(res, userData.orderId)) {
             return;
         }
-    },
-    editAddress: function() {
-        
     }
 };
