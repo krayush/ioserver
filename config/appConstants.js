@@ -20,12 +20,11 @@ module.exports = {
         "token-key": "23900r8LADKLSKDL@(*@)*!#)(*@JLDAJSLDJASLJFLAF)",
         "secret-key": "01234523900r8LADKLSKDL@(*@)*!#)(*@JLDf0123456789ab2def",
     },
-    'AUTH_HEADERS': {
+    AUTH_HEADERS: {
         'TOKEN' : 'X-Api-AuthToken',
         'SIGN' : 'X-Api-Signature'
     },
     PASSWORD_MIN_LENGTH: 6,
     LOCAL_CDN_URL: "http://localhost:9090",
-    PUBLIC_CDN_URL: "http://ivokiobucket.s3-website-us-east-1.amazonaws.com",
-    FB_APP_SECRET: "24d483ff985095a80aa59bd9e6c7a885"
+    PUBLIC_CDN_URL: ""
 };
