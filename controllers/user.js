@@ -3,7 +3,6 @@ var crypto = require("../vendor/crypto");
 var md5 = require('md5');
 var connection = require("../config/db");
 var queries = require("../config/dbQueries");
-var q = require('q');
 
 module.exports = (function() {
     var sessionTokenGenerator = function(req, res) {
@@ -16,8 +15,10 @@ module.exports = (function() {
     return {
         registerSession: function (req, res) {
             var userResponse;
-            var userData = req.query.data || {};
-            if (!crypto.validateAuthorization(req, res, userData)) {
+            req.query.data = req.query.data || {
+                    userId:"test"
+                };
+            if (!crypto.validateAuthorization(req, res, req.query.data)) {
                 return;
             }
             // ------------- User is authorized here -------------
@@ -26,13 +27,22 @@ module.exports = (function() {
             if(userId) {
                 connection.query(queries.SUBSCRIBE_USER,
                     [userId, sessionToken],
-                    function(err, results) {
+                    function(err) {
                         if (err) {
-                            throw err;
+                            userResponse = {
+                                success: false,
+                                message: err
+                            };
+                        } else {
+                            userResponse = {
+                                data: {
+                                    sessionToken: sessionToken
+                                },
+                                success: true,
+                                message: ""
+                            };
                         }
-                        if(response && response.insertId) {
-
-                        }
+                        res.json(userResponse);
                     }
                 );
             } else {
@@ -40,43 +50,8 @@ module.exports = (function() {
                     success: false,
                     message: ""
                 };
+                res.json(userResponse);
             }
-            res.json(userResponse);
-
-
-            // connection.query(insertQuery, function (err, response) {
-            //     if (err) {
-            //         throw err;
-            //     }
-            //     if(response && response.insertId) {
-            //         var selectReview = queries.SELECT_REVIEWS_QUERY.replace("{id}", response.insertId);
-            //         connection.query(selectReview, function (err, rows) {
-            //             if (err) {
-            //                 throw err;
-            //             }
-            //             if(rows && rows.length) {
-            //                 userResponse = {
-            //                     success: true,
-            //                     data: rows,
-            //                     message: ""
-            //                 };
-            //             } else {
-            //                 userResponse = {
-            //                     success: false,
-            //                     message: "No rows found"
-            //                 };
-            //             }
-            //             res.json(userResponse);
-            //         });
-            //
-            //     } else {
-            //         userResponse = {
-            //             success: false,
-            //             message: "No rows found"
-            //         };
-            //         res.json(userResponse);
-            //     }
-            // });
         }
     };
 })();
