@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "node-static": "latest",
-    "MD5": "latest",
+    "md5": "latest",
     "body-parser": "^1.8.1",
     "client-sessions": "^0.7.0",
     "cookie-parser": "^1.4.0",
