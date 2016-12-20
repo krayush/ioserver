@@ -22,7 +22,7 @@ app.use('/user', userRoutes);
 // //var error404Routes = require('./middlewares/error404');
 // //app.use(error404Routes(app).errorHandler);
 //
-// // This part needs to handled from gruntfile.js
-// var listener = app.listen(5151, function() {
-//     console.log("Server running on port - " + listener.address().port);
-// });
+// This part needs to handled from gruntfile.js
+var listener = app.listen(5151, function() {
+    console.log("Server running on port - " + listener.address().port);
+});
