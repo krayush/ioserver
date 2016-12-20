@@ -2,9 +2,7 @@ var express = require('express');
 var app = express();
 // Routes section starts here
 var userRoutes = require('./routes/user');
-app.use('/user', userRoutes(app));
-
-
+app.use('/user', userRoutes);
 
 
 //var generic = require('./middlewares/genericCookies');
@@ -18,6 +16,7 @@ app.use('/user', userRoutes(app));
 //         something:'any json object here'
 //     });
 // });
+
 
 // // Note: This will always come in the end as it is going to be invoked if no url matches
 // // 404 Error handler
