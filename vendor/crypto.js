@@ -2,7 +2,7 @@
  * JavaScript implementation of API authentication signature creation method
  * using token and secret key. It user Hash HMAC algorithm with SHA256.
  *
- * Include hmac-sha256.js for CryptoJS lib inclusion
+ * Include hmac-sha256.js for cryptoJS lib inclusion
  *
  * @param {String}
  *            token Unique auth token provided to user
@@ -17,8 +17,8 @@
  *            (GET|POST|PUT|DELETE|OPTIONS)
  * @returns {String} base64 encoded signature
  */
-var CryptoJS = require("../vendor/hmac-sha256");
-var API_CONFIG = require("./appConstants");
+var cryptoJS = require("./hmac-sha256");
+var appConstants = require("../config/appConstants");
 
 var cryptoAlgorithm = function(token, secret, data, url, requestMethod) {
     data = (function(o) {
@@ -41,7 +41,7 @@ var cryptoAlgorithm = function(token, secret, data, url, requestMethod) {
         }
     }
     longStr += token;
-    var hash = CryptoJS.HmacSHA256(longStr.trim(), secret);
+    var hash = cryptoJS.HmacSHA256(longStr.trim(), secret);
     return (new Buffer(JSON.stringify(hash)).toString('base64'));
 };
 
@@ -50,20 +50,15 @@ module.exports = {
     validateAuthorization: function (req, res, userData) {
         var requestMethod = req.method, userResponse;
         var url = req.protocol + '://' + req.get('host') + req.originalUrl;
-        var token = API_CONFIG.appKeys["token-key"];
-        //res.headers[API_CONFIG.AUTH_HEADERS.TOKEN];
-        var secret = API_CONFIG.appKeys["secret-key"];
-        //res.headers[API_CONFIG.AUTH_HEADERS.SIGN];
+        var token = req.headers[appConstants.authHeaders.token];
+        var secret = appConstants.appKeys["private-key"];
         var encryptedData = cryptoAlgorithm(token, secret, userData, url, requestMethod);
-        // Line to be commented or removed later
-        req.query.encryptedData = encryptedData;
         if(req.query.encryptedData !== encryptedData) {
-            userResponse = {
-                message: "You are not authorized to view this page.",
+            res.json({
+                message: appConstants.messages.authFailed,
                 success: false
-            };
-            res.json(userResponse);
-            return;
+            });
+            return false;
         }
         return true;
     }

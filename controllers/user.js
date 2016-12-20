@@ -1,6 +1,5 @@
 var util = require('./util');
-var API_CONFIG = require("../config/appConstants");
-var crypto = require("../config/crypto");
+var crypto = require("../vendor/crypto");
 var connection = require("../config/db");
 var queries = require("../config/dbQueries");
 var q = require('q');
@@ -8,6 +7,7 @@ var q = require('q');
 module.exports = {
     registerSession: function (req, res) {
         var userResponse;
+        var userData = req.query.data;
         if (!crypto.validateAuthorization(req, res, userData)) {
             return;
         }
@@ -20,13 +20,7 @@ module.exports = {
             return;
         }
 
-        var userData = {
-            userId: req.query.userId,
-            description: req.query.description,
-            rating: req.query.rating,
-            title: req.query.title,
-            isAnonymous: req.query.isAnonymous
-        };
+
 
         if(req.IV_ID.userId.toString() === userData.userId.toString()) {
             userResponse = {
