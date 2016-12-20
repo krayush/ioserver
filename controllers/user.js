@@ -7,7 +7,7 @@ var queries = require("../config/dbQueries");
 module.exports = (function() {
     var sessionTokenGenerator = function(req, res) {
         var data = {
-            userId: req.query.data.userId,
+            userId: req.body.data.userId,
             timeStamp: new Date().getTime()
         };
         return md5(data);
@@ -15,15 +15,13 @@ module.exports = (function() {
     return {
         registerSession: function (req, res) {
             var userResponse;
-            req.query.data = req.query.data || {
-                    userId:"test"
-                };
-            if (!crypto.validateAuthorization(req, res, req.query.data)) {
+            req.body.data = req.body.data || {};
+            if (!crypto.validateAuthorization(req, res, req.body.data)) {
                 return;
             }
             // ------------- User is authorized here -------------
             var sessionToken = sessionTokenGenerator(req, res);
-            var userId = req.query.data.userId;
+            var userId = req.body.data.userId;
             if(userId) {
                 connection.query(queries.SUBSCRIBE_USER,
                     [userId, sessionToken],

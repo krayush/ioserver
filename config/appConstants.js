@@ -3,7 +3,7 @@ module.exports = {
         "private-key": "23900r8LADKLSKDL@(*@)*!#)(*@JLDAJSLDJASLJFLAF)"
     },
     authHeaders: {
-        "token": "X-Api-AuthToken"
+        "token": "x-api-authtoken"
     },
     messages: {
         "authFailed": "Request authorization failed"

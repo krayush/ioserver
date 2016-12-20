@@ -53,7 +53,8 @@ module.exports = {
         var token = req.headers[appConstants.authHeaders.token];
         var secret = appConstants.appKeys["private-key"];
         var encryptedData = cryptoAlgorithm(token, secret, userData, url, requestMethod);
-        if(req.query.encryptedData !== encryptedData) {
+        //console.error(token, secret, userData, url, requestMethod)
+        if(req.body.encryptedData !== encryptedData) {
             res.json({
                 message: appConstants.messages.authFailed,
                 success: false

@@ -1,9 +1,10 @@
 var express = require('express');
+var app = express();
 var userController = require('../controllers/user');
 
 module.exports = (function() {
     var router = express.Router();
     console.log("Reached User Route");
-    router.get('/register-session', userController.registerSession);
+    router.post('/register-session', userController.registerSession);
     return router;
 })();
