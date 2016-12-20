@@ -1,9 +1,11 @@
 var express = require('express');
 var app = express();
-
 // Routes section starts here
 var userRoutes = require('./routes/user');
-app.use('/user', userRoutes);
+app.use('/user', userRoutes(app));
+
+
+
 
 //var generic = require('./middlewares/genericCookies');
 //var cors = require('./middlewares/cors');
@@ -26,3 +28,8 @@ app.use('/user', userRoutes);
 var listener = app.listen(5151, function() {
     console.log("Server running on port - " + listener.address().port);
 });
+
+
+
+
+
