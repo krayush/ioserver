@@ -11,15 +11,14 @@ module.exports = {
         if (!crypto.validateAuthorization(req, res, userData)) {
             return;
         }
-        if(!(req.IV_ID && req.IV_ID.userEmail && req.IV_ID.userId)) {
-            userResponse = {
-                message: "User not logged in",
-                success: false
-            };
-            res.json(userResponse);
-            return;
-        }
-
+        // User is authorized here -------------
+        // name = req.getUserName();
+        // token  = generateToken(name);
+        // pushToDB(user,token).done(){
+        //     end Call with {
+        //         token : "token",
+        //     };
+        // }
 
 
         if(req.IV_ID.userId.toString() === userData.userId.toString()) {
