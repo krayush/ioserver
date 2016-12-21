@@ -6,6 +6,7 @@ module.exports = {
         "token": "x-api-authtoken"
     },
     messages: {
-        "authFailed": "Request authorization failed"
+        "authFailed": "Request authorization failed",
+        "invalidDataFromServer": "Invalid JSON received from Application Server"
     }
 };

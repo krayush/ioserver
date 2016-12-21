@@ -1,40 +1,34 @@
 var crypto = require("../vendor/crypto");
-var md5 = require('md5');
+var appConstants = require("../config/appConstants");
 
 module.exports = (function() {
+    var evaluateAction = function(req, res) {
+        try {
+            var data = JSON.parse(req.body.data);
+            switch(data.action) {
+                case "":
+                    break;
+                case "":
+                    break;
+                case "":
+                    break;
+            }
+            //req.body.sessionToken;
+            //data.message;
+
+        } catch (e) {
+            res.json({
+                success: false,
+                message: appConstants.messages.invalidDataFromServer
+            });
+        }
+    };
     return {
         publish: function(req, res) {
-            var userResponse;
-            if (!crypto.validateAuthorization(req, res, req.body.data)) {
+            if (!crypto.validateAuthorization(req, res, req.body)) {
                 return;
             }
-            // ------------- User is authorized here -------------
-            var sessionToken = req.body.data.sessionToken;
-            if(sessionToken) {
-                connection.query(req.body.data.endAllSessions ? queries.END_ALL_SESSIONS: queries.END_CURRENT_SESSION,
-                    [sessionToken],
-                    function(err) {
-                        if (err) {
-                            userResponse = {
-                                success: false,
-                                message: err
-                            };
-                        } else {
-                            userResponse = {
-                                success: true,
-                                message: ""
-                            };
-                        }
-                        res.json(userResponse);
-                    }
-                );
-            } else {
-                userResponse = {
-                    success: false,
-                    message: appConstants.messages.authFailed
-                };
-                res.json(userResponse);
-            }
+            return evaluateAction(req, res);
         }
     };
 })();
