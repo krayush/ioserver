@@ -1,6 +1,6 @@
 module.exports = {
     appKeys: {
-        "private-key": "23900r8LADKLSKDL@(*@)*!#)(*@JLDAJSLDJASLJFLAF)"
+        "public-key-test": "private-key-test"
     },
     authHeaders: {
         "token": "x-api-authtoken"

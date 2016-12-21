@@ -25,6 +25,8 @@
     "grunt-concurrent": "*",
     "grunt-contrib-copy": "*",
     "grunt-contrib-uglify": "^2.0.0",
+    "btoa": "latest",
+    "node-uuid": "latest",
     "grunt-contrib-watch": "*",
     "grunt-nodemon": "*",
     "mysql": "github:felixge/node-mysql",

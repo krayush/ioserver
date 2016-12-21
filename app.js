@@ -14,6 +14,10 @@ app.use(bodyParser.json());
 var userRoutes = require('./routes/user');
 app.use('/user', userRoutes);
 
+var publishRoutes = require('./routes/publish');
+app.use('/publish', publishRoutes);
+
+
 // var comet = require('comet.io').createServer();
 // comet.on('connection', function (socket) {
 //     // do something when a client has connected

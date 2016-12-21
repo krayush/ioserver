@@ -19,7 +19,7 @@
  */
 var cryptoJS = require("./hmac-sha256");
 var appConstants = require("../config/appConstants");
-
+var btoa = require("btoa");
 var cryptoAlgorithm = function(token, secret, data, url, requestMethod) {
     data = (function(o) {
         var sorted = {}, key, a = [];
@@ -42,7 +42,7 @@ var cryptoAlgorithm = function(token, secret, data, url, requestMethod) {
     }
     longStr += token;
     var hash = cryptoJS.HmacSHA256(longStr.trim(), secret);
-    return (new Buffer(JSON.stringify(hash)).toString('base64'));
+    return btoa(hash);
 };
 
 module.exports = {
@@ -51,9 +51,8 @@ module.exports = {
         var requestMethod = req.method, userResponse;
         var url = req.protocol + '://' + req.get('host') + req.originalUrl;
         var token = req.headers[appConstants.authHeaders.token];
-        var secret = appConstants.appKeys["private-key"];
+        var secret = appConstants.appKeys[req.headers[appConstants.authHeaders.token]];
         var encryptedData = cryptoAlgorithm(token, secret, userData, url, requestMethod);
-        //console.error(token, secret, userData, url, requestMethod)
         if(req.body.encryptedData !== encryptedData) {
             res.json({
                 message: appConstants.messages.authFailed,

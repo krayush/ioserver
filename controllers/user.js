@@ -1,15 +1,12 @@
 var crypto = require("../vendor/crypto");
-var md5 = require('md5');
+var uuid = require('node-uuid');
 var connection = require("../config/db");
 var queries = require("../config/dbQueries");
+var appConstants = require("../config/appConstants");
 
 module.exports = (function() {
     var sessionTokenGenerator = function(req, res) {
-        var data = {
-            userId: req.body.data.userId,
-            timeStamp: new Date().getTime()
-        };
-        return md5(data);
+        return uuid.v1();
     };
     return {
         registerSession: function (req, res) {
@@ -45,7 +42,41 @@ module.exports = (function() {
             } else {
                 userResponse = {
                     success: false,
-                    message: ""
+                    message: appConstants.messages.authFailed
+                };
+                res.json(userResponse);
+            }
+        },
+        endSession: function(req, res) {
+            var userResponse;
+            req.body.data = req.body.data || {};
+            if (!crypto.validateAuthorization(req, res, req.body.data)) {
+                return;
+            }
+            // ------------- User is authorized here -------------
+            var sessionToken = req.body.data.sessionToken;
+            if(sessionToken) {
+                connection.query(req.body.data.endAllSessions ? queries.END_ALL_SESSIONS: queries.END_CURRENT_SESSION,
+                    [sessionToken],
+                    function(err) {
+                        if (err) {
+                            userResponse = {
+                                success: false,
+                                message: err
+                            };
+                        } else {
+                            userResponse = {
+                                success: true,
+                                message: ""
+                            };
+                        }
+                        res.json(userResponse);
+                    }
+                );
+            } else {
+                userResponse = {
+                    success: false,
+                    message: appConstants.messages.authFailed
                 };
                 res.json(userResponse);
             }
