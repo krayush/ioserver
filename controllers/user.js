@@ -1,4 +1,3 @@
-var util = require('./util');
 var crypto = require("../vendor/crypto");
 var md5 = require('md5');
 var connection = require("../config/db");
