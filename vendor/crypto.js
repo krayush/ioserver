@@ -52,6 +52,13 @@ module.exports = {
         var url = req.protocol + '://' + req.get('host') + req.originalUrl;
         var token = req.headers[appConstants.authHeaders.token];
         var secret = appConstants.appKeys[req.headers[appConstants.authHeaders.token]];
+        if(!(token && secret)) {
+            res.json({
+                message: appConstants.messages.authFailed,
+                success: false
+            });
+            return false;
+        }
         var encryptedData = cryptoAlgorithm(token, secret, userData, url, requestMethod);
         if(req.body.encryptedData !== encryptedData) {
             res.json({

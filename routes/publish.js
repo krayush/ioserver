@@ -5,6 +5,6 @@ var userController = require('../controllers/publish');
 module.exports = (function() {
     var router = express.Router();
     console.log("Reached Publish Route");
-    router.post('/', userController.publish);
+    router.get('/', userController.publish);
     return router;
 })();
