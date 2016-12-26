@@ -9,7 +9,7 @@ module.exports = (function() {
             if(sessionInstances[req.body.sessionToken]) {
                 sessionInstances[req.body.sessionToken].broadcast.emit(data.message);
             }
-            sessionInstances["2781b890-c83a-11e6-9fe3-4903fdf92c48"].emit("message-received", "TEST");
+            //sessionInstances["2781b890-c83a-11e6-9fe3-4903fdf92c48"].emit("message-received", "TEST");
             // switch(data.action) {
             //     case "":
             //         break;
@@ -31,9 +31,9 @@ module.exports = (function() {
     };
     return {
         publish: function(req, res) {
-            // if (!crypto.validateAuthorization(req, res, req.body)) {
-            //     return;
-            // }
+            if (!crypto.validateAuthorization(req, res, req.body)) {
+                return;
+            }
             return evaluateAction(req, res);
         }
     };
