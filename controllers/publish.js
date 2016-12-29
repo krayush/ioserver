@@ -7,7 +7,9 @@ var queries = require("../config/dbQueries");
 module.exports = (function() {
     var publishToSingleUser = function(req, res, token) {
         var request = req.body.data;
-        sessionInstances[token].emit("message-received", request.message);
+        if(sessionInstances[token]) {
+            sessionInstances[token].emit("message-received", request.message);
+        }
     };
     var evaluateAction = function(req, res) {
         try {
