@@ -1,6 +1,8 @@
 var crypto = require("../vendor/crypto");
 var appConstants = require("../config/appConstants");
 var sessionInstances = require('../models/sessionTokens')();
+var connection = require("../config/db");
+var queries = require("../config/dbQueries");
 
 module.exports = (function() {
     var publishToSingleUser = function(req, res, token) {
@@ -10,7 +12,7 @@ module.exports = (function() {
     var evaluateAction = function(req, res) {
         try {
             var data = req.body.data;
-            if(sessionInstances[data.sessionToken]) {
+            if(sessionInstances[data.sessionToken] || (data.action === "PUBLISH_ALL")) {
                 //sessionInstances["2781b890-c83a-11e6-9fe3-4903fdf92c48"].emit("message-received", "TEST");
                 switch (data.action) {
                     case "PUBLISH_SINGLE":
@@ -18,11 +20,38 @@ module.exports = (function() {
                         res.json({ success: true });
                         break;
                     case "PUBLISH_ALL_BY_USER":
-                        //getSessionTokensByToken();
-                        //res.json({ success: true });
+                        connection.query(queries.GET_ALL_SESSIONS_BY_ID, [data.sessionToken], function(err, rows) {
+                            if (err) {
+                                res.json({
+                                    success: false,
+                                    message: err
+                                });
+                            } else {
+                                if(rows && rows.length) {
+                                    rows.map(function (row) {
+                                        publishToSingleUser(req, res, row.session_token);
+                                    });
+                                }
+                                res.json({ success: true });
+                            }
+                        });
                         break;
                     case "PUBLISH_ALL":
-
+                        connection.query(queries.GET_ALL_SESSIONS, function(err, rows) {
+                            if (err) {
+                                res.json({
+                                    success: false,
+                                    message: err
+                                });
+                            } else {
+                                if(rows && rows.length) {
+                                    rows.map(function (row) {
+                                        publishToSingleUser(req, res, row.session_token);
+                                    });
+                                }
+                                res.json({ success: true });
+                            }
+                        });
                         break;
                     default:
                         res.json({

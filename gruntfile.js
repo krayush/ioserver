@@ -23,9 +23,9 @@ module.exports = function(grunt) {
             dev: {
                 script: 'app.js',
                 options: {
-                    nodeArgs: ['--debug'],
+                    nodeArgs: ['--debug=5859'],
                     env: {
-                        PORT: '9090'
+                        PORT: '5859'
                     },
                     // omit this property if you aren't serving HTML files and
                     // don't want to open a browser tab on start
