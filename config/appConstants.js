@@ -7,6 +7,8 @@ module.exports = {
     },
     messages: {
         "authFailed": "Request authorization failed",
-        "invalidDataFromServer": "Invalid JSON received from Application Server"
+        "invalidDataFromServer": "Invalid JSON received from application server",
+        "noValidSession": "Invalid session token from application server",
+        "invalidAction": "Invalid action from application server"
     }
 };
