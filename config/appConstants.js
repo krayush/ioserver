@@ -10,5 +10,7 @@ module.exports = {
         "invalidDataFromServer": "Invalid JSON received from application server",
         "noValidSession": "Invalid session token from application server",
         "invalidAction": "Invalid action from application server"
-    }
+    },
+    ioServerPort: 5151,
+    appServerURL: "http://localhost:5252"
 };

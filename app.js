@@ -3,6 +3,7 @@ var app = express();
 var cors = require('./middlewares/cors');
 var bodyParser = require('body-parser');
 var sessionInstances = require('./models/sessionTokens')();
+var appConstants = require('./config/appConstants');
 
 // using cors
 app.use(cors);
@@ -23,7 +24,7 @@ app.use('/publish', publishRoutes);
 // //app.use(error404Routes(app).errorHandler);
 
 // This part needs to handled from gruntfile.js
-var listener = app.listen(5151, function() {
+var listener = app.listen(appConstants.ioServerPort, function() {
     console.log("Server running on port - " + listener.address().port);
 });
 
