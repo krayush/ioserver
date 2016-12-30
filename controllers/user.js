@@ -4,7 +4,6 @@ var connection = require("../config/db");
 var queries = require("../config/dbQueries");
 var appConstants = require("../config/appConstants");
 var sessionTokens = require("../models/sessionTokens")();
-var traverse = require("traverse");
 
 module.exports = (function() {
     var sessionTokenGenerator = function() {
@@ -19,10 +18,6 @@ module.exports = (function() {
             }
             // ------------- User is authorized here -------------
             var sessionToken = sessionTokenGenerator();
-            sessionTokens[req.headers[appConstants.authHeaders.token]][sessionToken] = {
-                creationDate: new Date().getTime(),
-                appKey: req.headers[appConstants.authHeaders.token]
-            };
             var userId = req.body.data.userId;
             if(userId) {
                 connection.query(queries.CREATE_USER,
@@ -34,10 +29,13 @@ module.exports = (function() {
                                 message: err
                             };
                         } else {
+                            sessionTokens[req.headers[appConstants.authHeaders.token]][sessionToken] = {
+                                creationDate: new Date().getTime(),
+                                appKey: req.headers[appConstants.authHeaders.token],
+                                userId: userId
+                            };
                             userResponse = {
-                                data: {
-                                    sessionToken: sessionToken
-                                },
+                                data: { sessionToken: sessionToken },
                                 success: true
                             };
                         }
@@ -87,11 +85,14 @@ module.exports = (function() {
                                         message: err
                                     });
                                 } else {
-                                    // traverse(sessionTokens[req.headers[appConstants.authHeaders.token]]).map(function(x) {
-                                    //     if(this.isLeaf) {
-                                    //         //something to be done
-                                    //     }
-                                    // });
+
+                                    var currentAppTokens = sessionTokens[req.headers[appConstants.authHeaders.token]];
+                                    var userId = currentAppTokens[req.body.data.sessionToken].userId;
+                                    Object.keys(currentAppTokens).map(function(x) {
+                                        if(currentAppTokens[x].userId === userId) {
+                                            delete currentAppTokens[x];
+                                        }
+                                    });
                                     res.json({ success: true });
                                 }
                             }

@@ -3,7 +3,7 @@ var traverse = require('traverse');
 var sessionTokens;
 var initSessionTokens = function() {
     sessionTokens = {};
-}
+};
 module.exports = function() {
     if(!sessionTokens) {
         initSessionTokens();
