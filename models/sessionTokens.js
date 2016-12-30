@@ -1,4 +1,4 @@
-var sessionTokens = [];
+var sessionTokens = {};
 module.exports = function() {
     return sessionTokens;
 };

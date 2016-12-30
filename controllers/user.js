@@ -3,6 +3,7 @@ var uuid = require('node-uuid');
 var connection = require("../config/db");
 var queries = require("../config/dbQueries");
 var appConstants = require("../config/appConstants");
+var sessionTokens = require("../models/sessionTokens")();
 
 module.exports = (function() {
     var sessionTokenGenerator = function(req, res) {
@@ -17,6 +18,9 @@ module.exports = (function() {
             }
             // ------------- User is authorized here -------------
             var sessionToken = sessionTokenGenerator(req, res);
+            sessionTokens[sessionToken] = {
+                creationDate: new Date().getTime()
+            };
             var userId = req.body.data.userId;
             if(userId) {
                 connection.query(queries.SUBSCRIBE_USER,
@@ -32,8 +36,7 @@ module.exports = (function() {
                                 data: {
                                     sessionToken: sessionToken
                                 },
-                                success: true,
-                                message: ""
+                                success: true
                             };
                         }
                         res.json(userResponse);
@@ -66,8 +69,7 @@ module.exports = (function() {
                             };
                         } else {
                             userResponse = {
-                                success: true,
-                                message: ""
+                                success: true
                             };
                         }
                         res.json(userResponse);
