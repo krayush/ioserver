@@ -8,8 +8,9 @@ module.exports = (function() {
     var socketio;
     var publishToSingleUser = function(req, res, token) {
         var request = req.body.data;
-        if(sessionTokens[token] && sessionTokens[token].sessionInstance) {
-            sessionTokens[token].sessionInstance.emit(
+        var sessionData = sessionTokens[req.headers[appConstants.authHeaders.token]][token];
+        if(sessionData && sessionData.sessionInstance) {
+            sessionData.sessionInstance.emit(
                 req.headers[appConstants.authHeaders.token] + "/message-received",
                 request.message
             );
@@ -18,31 +19,33 @@ module.exports = (function() {
     var evaluateAction = function(req, res) {
         try {
             var data = req.body.data;
-            if(sessionTokens[data.sessionToken]) {
+            if(sessionTokens[req.headers[appConstants.authHeaders.token]][data.sessionToken] || data.action === "PUBLISH_ALL") {
                 switch (data.action) {
                     case "PUBLISH_SINGLE":
                         publishToSingleUser(req, res, data.sessionToken);
                         res.json({ success: true });
                         break;
                     case "PUBLISH_ALL_BY_USER":
-                        connection.query(queries.GET_ALL_SESSIONS_BY_ID, [data.sessionToken], function(err, rows) {
-                            if (err) {
-                                res.json({
-                                    success: false,
-                                    message: err
-                                });
-                            } else {
-                                if(rows && rows.length) {
-                                    rows.map(function (row) {
-                                        publishToSingleUser(req, res, row.session_token);
+                        connection.query(queries.GET_ALL_SESSIONS_BY_ID,
+                            [data.sessionToken, req.headers[appConstants.authHeaders.token]],
+                            function(err, rows) {
+                                if (err) {
+                                    res.json({
+                                        success: false,
+                                        message: err
                                     });
+                                } else {
+                                    if(rows && rows.length) {
+                                        rows.map(function (row) {
+                                            publishToSingleUser(req, res, row.session_token);
+                                        });
+                                    }
+                                    res.json({ success: true });
                                 }
-                                res.json({ success: true });
                             }
-                        });
+                        );
                         break;
                     case "PUBLISH_ALL":
-                        console.error(req.headers[appConstants.authHeaders.token] + "/message-received")
                         socketio.sockets.emit(
                             req.headers[appConstants.authHeaders.token] + "/message-received",
                             data.message

@@ -34,6 +34,7 @@
     "open": "*",
     "promise": "^7.0.4",
     "q": "^1.4.1",
+    "traverse": "latest",
     "querystring": "^0.2.0"
   }
 }
