@@ -9,7 +9,10 @@ module.exports = (function() {
     var publishToSingleUser = function(req, res, token) {
         var request = req.body.data;
         if(sessionTokens[token] && sessionTokens[token].sessionInstance) {
-            sessionTokens[token].sessionInstance.emit("message-received", request.message);
+            sessionTokens[token].sessionInstance.emit(
+                req.headers[appConstants.authHeaders.token] + "/message-received",
+                request.message
+            );
         }
     };
     var evaluateAction = function(req, res) {
@@ -39,7 +42,11 @@ module.exports = (function() {
                         });
                         break;
                     case "PUBLISH_ALL":
-                        socketio.sockets.emit('message-received', data.message);
+                        console.error(req.headers[appConstants.authHeaders.token] + "/message-received")
+                        socketio.sockets.emit(
+                            req.headers[appConstants.authHeaders.token] + "/message-received",
+                            data.message
+                        );
                         res.json({ success: true });
                         break;
                     default:

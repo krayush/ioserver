@@ -24,7 +24,7 @@ module.exports = (function() {
             var userId = req.body.data.userId;
             if(userId) {
                 connection.query(queries.SUBSCRIBE_USER,
-                    [userId, sessionToken],
+                    [userId, sessionToken, req.headers[appConstants.authHeaders.token]],
                     function(err) {
                         if (err) {
                             userResponse = {
